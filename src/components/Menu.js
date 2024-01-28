@@ -42,6 +42,27 @@ const menuItems = [
 ]
 
 function Menu() {
+  /* Menu is parent for MenuItem and Receipt as they are both rendered in Menu.
+      Need to lift state up as there is a component all 3 use. */
+
+      /* Receipt needs purhcasedItems so it can display the value of 
+      the state variable as an array */
+
+      /* menuItem needs purhcasedItems to update array*/
+
+  const [purchasedItems, setPurchasedItems] = React.useState([])
+
+  /* function updatePurchasedItems takes one parameter, purchasedItem */
+  const addPurchasedItems = purchasedItem => {
+    setPurchasedItems([...purchasedItems, purchasedItem])
+  }
+
+  const removePurchasedItems = name => {
+    /* if name is not equal to item.name, add it to list*/
+    setPurchasedItems(purchasedItems.filter(item => name !== item.name))
+  }
+
+
   return (
     <section>
       <dl>
@@ -51,11 +72,15 @@ function Menu() {
               name={menuItem.name}
               price={menuItem.price}
               picture={menuItem.picture}
+
+              /* passing the name of the function down to MenuItem*/
+              addPurchasedItems = {addPurchasedItems}
+              removePurchasedItems = {removePurchasedItems}
             />
           )
         })}
       </dl>
-      <Receipt purchasedItems={[]} />
+      <Receipt purchasedItems={purchasedItems} />
     </section>
   )
 }
